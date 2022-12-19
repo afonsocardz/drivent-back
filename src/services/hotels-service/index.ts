@@ -13,8 +13,11 @@ async function listHotels(userId: number) {
   //Tem ticket pago isOnline false e includesHotel true
   const ticket = await ticketRepository.findTicketByEnrollmentId(enrollment.id);
 
-  if (!ticket || ticket.status === "RESERVED" || ticket.TicketType.isRemote || !ticket.TicketType.includesHotel) {
-    throw cannotListHotelsError();
+  if (!ticket || ticket.status === "RESERVED") {
+    throw cannotListHotelsError("Você precisa ter confirmado pagamento antes de fazer a escolha de hospedagem");
+  }
+  if (ticket.TicketType.isRemote || !ticket.TicketType.includesHotel) {
+    throw cannotListHotelsError("Sua modalidade de ingresso não inclui hospedagem Prossiga para a escolha de atividades");
   }
 }
 
