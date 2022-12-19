@@ -3,6 +3,14 @@ import enrollmentRepository from "@/repositories/enrollment-repository";
 import ticketRepository from "@/repositories/ticket-repository";
 import { notFoundError } from "@/errors";
 import { cannotListHotelsError } from "@/errors/cannot-list-hotels-error";
+import { Hotel, Room } from "@prisma/client";
+
+function vacantHotels(hotels: HotelWithRooms) {
+  return hotels.map(hotel => {
+    if (hotel.Rooms.some(room => room.capacity !== room._count.Booking))
+      return hotel;
+  });
+}
 
 async function listHotels(userId: number) {
   //Tem enrollment?
@@ -21,11 +29,20 @@ async function listHotels(userId: number) {
   }
 }
 
+type HotelWithRooms = (Hotel & {
+  Rooms: (Room & {
+    _count: {
+      Booking: number;
+    };
+  })[];
+})[]
+
 async function getHotels(userId: number) {
   await listHotels(userId);
 
   const hotels = await hotelRepository.findHotels();
-  return hotels;
+
+  return vacantHotels(hotels);
 }
 
 async function getHotelsWithRooms(userId: number, hotelId: number) {
