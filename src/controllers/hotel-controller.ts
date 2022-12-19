@@ -38,3 +38,19 @@ export async function getHotelsWithRooms(req: AuthenticatedRequest, res: Respons
     return res.sendStatus(httpStatus.BAD_REQUEST);
   }
 }
+
+export async function getCapacityHotel(req: AuthenticatedRequest, res: Response) {
+  const { hotelId } = req.params;
+
+  try {
+    const vacancies = await hotelService.getCapacity(Number(hotelId));
+    const data = { hotelId, vacancies };
+
+    return res.status(httpStatus.OK).send(data);
+  } catch (error) {
+    if (error.name === "NotFoundError") {
+      return res.sendStatus(httpStatus.NOT_FOUND);
+    }
+    return res.sendStatus(httpStatus.BAD_REQUEST);
+  }
+}
