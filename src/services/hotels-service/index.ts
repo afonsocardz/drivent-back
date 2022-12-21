@@ -8,6 +8,7 @@ import { Booking, Hotel, Room } from "@prisma/client";
 function filterHotels(hotels: HotelWithRooms[]) {
   return hotels.filter((hotel) => {
     const newHotel = prepareHotel(hotel);
+
     if (newHotel.hasBooking) {
       hotels.length = 0;
       return hotel;
@@ -29,10 +30,13 @@ function prepareHotel(hotel: HotelWithRooms) {
   const rooms: HotelRooms[] = hotel.Rooms;
   const hash: Record<string, string> = {};
   hotel.vacancyQty = 0;
+  hotel.hasBooking = false;
   for (let i = 0; i < rooms.length; i++) {
     hotel.vacancyQty += vacancyQty(rooms[i]);
-    hotel.hasBooking = userHasBooking(rooms[i]);
     setRoomTypes(hash, rooms[i]);
+    if (!hotel.hasBooking) {
+      hotel.hasBooking = userHasBooking(rooms[i]);
+    }
   }
   hotel.roomTypes = Object.values(hash).join(", ");
   return hotel;
@@ -57,10 +61,14 @@ function setRoomTypes(hash: Record<string, string>, room: HotelRooms) {
 }
 
 function userHasBooking(room: HotelRooms) {
-  if (room.Booking) {
+  const hash: Record<string, string> = {};
+  if (room.Booking[0]) {
+    setRoomTypes(hash, room);
+    const roomType = Object.values(hash).join("").toUpperCase();
     return {
-      roomName: room.name,
+      roomName: `${room.name} (${roomType})`,
       bookingId: room.Booking[0].id,
+      roommates: room.capacity - vacancyQty(room) - 1,
     };
   }
   return false;
@@ -89,7 +97,8 @@ async function listHotels(userId: number) {
 
 type UserBooking = {
   roomName: string,
-  bookingId: number
+  bookingId: number,
+  roommates: number,
 }
 
 type HotelWithRooms = (Hotel & {
