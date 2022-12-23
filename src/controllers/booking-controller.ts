@@ -35,6 +35,9 @@ export async function bookingRoom(req: AuthenticatedRequest, res: Response) {
     if (error.name === "CannotBookingError") {
       return res.sendStatus(httpStatus.FORBIDDEN);
     }
+    if (error.name === "unauthorizedError") {
+      return res.sendStatus(httpStatus.UNAUTHORIZED);
+    }
     return res.sendStatus(httpStatus.NOT_FOUND);
   }
 }

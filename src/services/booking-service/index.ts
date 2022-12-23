@@ -1,4 +1,4 @@
-import { cannotBookingError, notFoundError } from "@/errors";
+import { cannotBookingError, notFoundError, unauthorizedError } from "@/errors";
 import roomRepository from "@/repositories/room-repository";
 import bookingRepository from "@/repositories/booking-repository";
 import enrollmentRepository from "@/repositories/enrollment-repository";
@@ -41,6 +41,11 @@ async function bookingRoomById(userId: number, roomId: number) {
   await checkEnrollmentTicket(userId);
   await checkValidBooking(roomId);
 
+  //TODO validar se usuário tem booking
+  const userHasBooking = await bookingRepository.findByUserId(userId);
+  if (userHasBooking) {
+    throw unauthorizedError();
+  }
   return bookingRepository.create({ roomId, userId });
 }
 
@@ -55,7 +60,7 @@ async function changeBookingRoomById(userId: number, roomId: number) {
   return bookingRepository.upsertBooking({
     id: booking.id,
     roomId,
-    userId
+    userId,
   });
 }
 
