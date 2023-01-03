@@ -6,17 +6,25 @@ import { cannotListHotelsError } from "@/errors/cannot-list-hotels-error";
 import { Booking, Hotel, Room } from "@prisma/client";
 
 function filterHotels(hotels: HotelWithRooms[]) {
-  return hotels.filter((hotel) => {
+  const filteredHotels = hotels.filter((hotel) => {
     const newHotel = prepareHotel(hotel);
 
     if (newHotel.hasBooking) {
       hotels.length = 0;
-      return hotel;
+      return newHotel;
     }
     if (newHotel.vacancyQty > 0) {
+      return newHotel;
+    }
+  });
+
+  const hasBooking = filteredHotels.filter((hotel) => {
+    if (hotel.hasBooking) {
       return hotel;
     }
   });
+
+  return hasBooking[0] ? hasBooking : filteredHotels;
 }
 
 type HotelRooms = (Room & {
@@ -67,6 +75,7 @@ function userHasBooking(room: HotelRooms) {
     const roomType = Object.values(hash).join("").toUpperCase();
     return {
       roomName: `${room.name} (${roomType})`,
+      roomId: room.id,
       bookingId: room.Booking[0].id,
       roommates: room.capacity - vacancyQty(room) - 1,
     };
@@ -97,6 +106,7 @@ async function listHotels(userId: number) {
 
 type UserBooking = {
   roomName: string,
+  roomId: number,
   bookingId: number,
   roommates: number,
 }
