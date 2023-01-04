@@ -16,3 +16,11 @@ async function getActivitiesByDate(dateId: number) {
   });
   return activities;
 }
+
+const activityRepository = {
+  getActivitiesByDate,
+  getDates,
+  getPlaces
+};
+
+export default activityRepository;
