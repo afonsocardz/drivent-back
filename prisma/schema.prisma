@@ -152,14 +152,14 @@ model Activity {
   startTime    DateTime
   endTime      DateTime
   capacity     Int
-  dateId       Int
-  Date         Date           @relation(fields: [dateId], references: [id])
+  activityDateId       Int
+  ActivityDate         ActivityDate           @relation(fields: [activityDateId], references: [id])
   placeId      Int
   Place        Place          @relation(fields: [placeId], references: [id])
   Subscription Subscription[]
 }
 
-model Date {
+model ActivityDate {
   id       Int        @id @default(autoincrement())
   date     DateTime
   Activity Activity[]
