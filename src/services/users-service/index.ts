@@ -17,6 +17,16 @@ export async function createUser({ email, password }: CreateUserParams): Promise
   });
 }
 
+export async function createGitUser({ email }: CreateGitUserParams): Promise<User> {
+  await canEnrollOrFail();
+  
+  await validateUniqueEmailOrFail(email);
+
+  return userRepository.create({
+    email
+  });
+}
+
 async function validateUniqueEmailOrFail(email: string) {
   const userWithSameEmail = await userRepository.findByEmail(email);
   if (userWithSameEmail) {
@@ -32,9 +42,11 @@ async function canEnrollOrFail() {
 }
 
 export type CreateUserParams = Pick<User, "email" | "password">;
+export type CreateGitUserParams = Pick<User, "email">;
 
 const userService = {
   createUser,
+  createGitUser
 };
 
 export * from "./errors";
