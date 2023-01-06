@@ -15,7 +15,7 @@ beforeEach(async () => {
   await cleanDb();
 });
 
-describe("GET /activities/:activityDateId", () => {
+describe("GET /activities", () => {
   it("should response with 402 when user ticket is remote", async () => {
     const user = await createUser();
     const token = await generateValidToken(user);
