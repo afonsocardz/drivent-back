@@ -1,26 +1,31 @@
 import { prisma } from "@/config";
 
-async function getDates() {
-  return await prisma.date.findMany({});
-}
-
-async function getPlaces() {
-  return await prisma.place.findMany({});
-}
-
 async function getActivitiesByDate(dateId: number) {
   const activities = await prisma.activity.findMany({
     where: {
-      dateId
+      activityDateId: dateId
     }
   });
   return activities;
 }
 
+async function findManyActivities(userId: number) {
+  return prisma.activity.findMany({
+    include: {
+      ActivityDate: true,
+      Place: true,
+      Subscription: {
+        where: {
+          userId,
+        },
+      },
+    },
+  });
+}
+
 const activityRepository = {
   getActivitiesByDate,
-  getDates,
-  getPlaces
+  findManyActivities
 };
 
 export default activityRepository;
