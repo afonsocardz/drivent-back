@@ -7,6 +7,10 @@ async function create(data: Prisma.SessionUncheckedCreateInput) {
   });
 }
 
+async function insertSession(data: Prisma.SessionUncheckedCreateInput) {
+  return;
+}
+
 const sessionRepository = {
   create,
 };
