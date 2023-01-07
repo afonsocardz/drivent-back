@@ -50,7 +50,7 @@ async function getActivities(userId: number) {
   });
 
   const activitiesValids = activities.filter((act) => act.dateIsNotExpired);
-
+  console.log(activitiesValids);
   //remove days duplicates
   const daysAvailable = activitiesValids.map((act) => act.day);
   const setConstructor = new Set(daysAvailable);
