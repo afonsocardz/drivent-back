@@ -11,10 +11,6 @@ require("dayjs/locale/pt-br");
 const isSameOrAfter = compareTime;
 dayjs.extend(isSameOrAfter);
 
-async function getAcitivitiesByDateId(dateId: number, userId: number) {
-  await listActivities(userId);
-}
-
 async function listActivities(userId: number) {
   //Tem enrollment?
   const enrollment = await enrollmentRepository.findWithAddressByUserId(userId);
@@ -33,7 +29,7 @@ async function listActivities(userId: number) {
 }
 
 async function getActivities(userId: number) {
-  //TODO verificar ticket usuário
+  await listActivities(userId);
   const activitiesDataBase = await activityRepository.findManyActivities(userId);
 
   const activities = activitiesDataBase.map((act) => {
@@ -60,7 +56,6 @@ async function getActivities(userId: number) {
 }
 
 const activityService = {
-  getAcitivitiesByDateId,
   getActivities,
 };
 

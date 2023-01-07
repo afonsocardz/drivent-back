@@ -17,6 +17,7 @@ import {
   createTicketTypeRemote,
   createHotel,
   createRoomWithHotelId,
+  createBooking,
 } from "../factories";
 import { cleanDb, generateValidToken } from "../helpers";
 
@@ -69,6 +70,20 @@ describe("GET /hotels", () => {
       expect(response.status).toEqual(httpStatus.PAYMENT_REQUIRED);
     });
 
+    it("should respond with status 402 when user ticket is not paid ", async () => {
+      const user = await createUser();
+      const token = await generateValidToken(user);
+      const enrollment = await createEnrollmentWithAddress(user);
+      const ticketType = await createTicketTypeRemote();
+      const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.RESERVED);
+
+      //Hoteis no banco
+
+      const response = await server.get("/hotels").set("Authorization", `Bearer ${token}`);
+
+      expect(response.status).toEqual(httpStatus.PAYMENT_REQUIRED);
+    });
+
     it("should respond with status 404 when user has no enrollment ", async () => {
       const user = await createUser();
       const token = await generateValidToken(user);
@@ -102,7 +117,43 @@ describe("GET /hotels", () => {
               name: createdHotel.name,
               image: createdHotel.image,
               createdAt: createdHotel.createdAt.toISOString(),
-              updatedAt: createdHotel.updatedAt.toISOString()
+              updatedAt: createdHotel.updatedAt.toISOString(),
+            })
+        ])
+      );
+    });
+
+    it.only("should respond with status 200 and hotel with user booking data", async () => {
+      const user = await createUser();
+      const token = await generateValidToken(user);
+      const enrollment = await createEnrollmentWithAddress(user);
+      const ticketType = await createTicketTypeWithHotel();
+      const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
+      const payment = await createPayment(ticket.id, ticketType.price);
+
+      const createdHotel = await createHotel();
+      const room = await createRoomWithHotelId(createdHotel.id);
+      const booking = await createBooking({ roomId: room.id, userId: user.id });
+
+      const response = await server.get("/hotels").set("Authorization", `Bearer ${token}`);
+
+      expect(response.status).toEqual(httpStatus.OK);
+
+      expect(response.body).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining(
+            {
+              id: createdHotel.id,
+              name: createdHotel.name,
+              image: createdHotel.image,
+              hasBooking: expect.objectContaining({
+                roomName: expect.stringContaining(room.name),
+                bookingId: booking.id,
+                roomId: room.id,
+                roommates: expect.any(Number),
+              }),
+              createdAt: createdHotel.createdAt.toISOString(),
+              updatedAt: createdHotel.updatedAt.toISOString(),
             })
         ])
       );
