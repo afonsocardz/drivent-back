@@ -3,8 +3,8 @@ import { prisma } from "@/config";
 async function getActivitiesByDate(dateId: number) {
   const activities = await prisma.activity.findMany({
     where: {
-      activityDateId: dateId
-    }
+      activityDateId: dateId,
+    },
   });
   return activities;
 }
@@ -20,12 +20,13 @@ async function findManyActivities(userId: number) {
         },
       },
     },
+    orderBy: [{ ActivityDate: { date: "asc" } }, { startTime: "asc" }],
   });
 }
 
 const activityRepository = {
   getActivitiesByDate,
-  findManyActivities
+  findManyActivities,
 };
 
 export default activityRepository;

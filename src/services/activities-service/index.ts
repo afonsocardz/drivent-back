@@ -33,24 +33,34 @@ async function getActivities(userId: number) {
   const activitiesDataBase = await activityRepository.findManyActivities(userId);
 
   const activities = activitiesDataBase.map((act) => {
-    const dateFormat = dayjs(act.ActivityDate.date.toString());
+    const startTimeFormat = dayjs(act.startTime).format("DD/MM HH:mm");
+    const endTimeFormat = dayjs(act.endTime).format("DD/MM HH:mm");
     const today = dayjs(Date.now()).format("DD/MM");
-    const dateDayAndMonth = dateFormat.format("DD/MM");
+    const dateDayAndMonth = dayjs(act.ActivityDate.date).format("DD/MM");
 
     return {
       ...act,
+      startTime: dayjs(startTimeFormat).format("HH:mm"),
+      endTime: dayjs(endTimeFormat).format("HH:mm"),
+      durationMinutes: dayjs(endTimeFormat).diff(startTimeFormat, "minute"),
       day: dateDayAndMonth,
-      weekDay: dateFormat.locale("pt-br").format("dddd"),
       dateIsNotExpired: dayjs(dateDayAndMonth).isSameOrAfter(today),
     };
   });
 
   const activitiesValids = activities.filter((act) => act.dateIsNotExpired);
-  console.log(activitiesValids);
-  //remove days duplicates
+
+  //remove dias duplicates
   const daysAvailable = activitiesValids.map((act) => act.day);
   const setConstructor = new Set(daysAvailable);
-  const daysFiltered = [...setConstructor.values()];
+  const days = [...setConstructor.values()];
+
+  const daysFiltered = days.map((day) => {
+    const weekDayComplet = dayjs(day).locale("pt-br").format("dddd");
+    const weekDayFirstWord = weekDayComplet.split("-")[0];
+    const weekDayFormated = weekDayFirstWord[0].toUpperCase() + weekDayFirstWord.substring(1);
+    return { day, weekDay: weekDayFormated };
+  });
 
   return { activitiesValids, daysFiltered };
 }
