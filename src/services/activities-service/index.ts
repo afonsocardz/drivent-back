@@ -5,7 +5,10 @@ import enrollmentRepository from "@/repositories/enrollment-repository";
 import ticketRepository from "@/repositories/ticket-repository";
 import activityRepository from "@/repositories/activity-repository";
 import compareTime from "dayjs/plugin/isSameOrAfter.js";
+import utc from "dayjs/plugin/utc";
 
+dayjs.extend(utc);
+dayjs.utc();
 require("dayjs/locale/pt-br");
 
 const isSameOrAfter = compareTime;
@@ -33,13 +36,14 @@ async function getActivities(userId: number) {
   const activitiesDataBase = await activityRepository.findManyActivities(userId);
 
   const activities = activitiesDataBase.map((act) => {
-    const startTimeFormat = dayjs(act.startTime);
-    const endTimeFormat = dayjs(act.endTime);
+    const startTimeFormat = dayjs.utc(act.startTime);
+    const endTimeFormat = dayjs.utc(act.endTime);
     const today = dayjs(Date.now()).format("DD/MM");
-    const dateDayAndMonth = dayjs(act.ActivityDate.date).format("DD/MM");
+    const dateDayAndMonth = dayjs.utc(act.ActivityDate.date).format("DD/MM");
 
     return {
       ...act,
+      test: act.ActivityDate.date.getDay(),
       startTime: dayjs(startTimeFormat).format("HH:mm"),
       endTime: dayjs(endTimeFormat).format("HH:mm"),
       durationMinutes: dayjs(endTimeFormat).diff(startTimeFormat, "minute"),
@@ -61,7 +65,7 @@ async function getActivities(userId: number) {
     const weekDayFormated = weekDayFirstWord[0].toUpperCase() + weekDayFirstWord.substring(1);
     return { day, weekDay: weekDayFormated };
   });
-
+  console.log(activitiesValids);
   return { activitiesValids, daysFiltered };
 }
 
