@@ -43,7 +43,6 @@ async function getActivities(userId: number) {
 
     return {
       ...act,
-      test: act.ActivityDate.date.getDay(),
       startTime: dayjs(startTimeFormat).format("HH:mm"),
       endTime: dayjs(endTimeFormat).format("HH:mm"),
       durationMinutes: dayjs(endTimeFormat).diff(startTimeFormat, "minute"),
@@ -89,7 +88,7 @@ async function createSubscription(userId: number, activityId: number) {
   }
 
   const capacity = Number(activity.capacity);
-  if(capacity < 1) {
+  if (capacity < 1) {
     throw { name: "BAD REQUEST" };
   }
 
@@ -105,7 +104,7 @@ async function createSubscription(userId: number, activityId: number) {
 
 const activityService = {
   getActivities,
-  createSubscription
+  createSubscription,
 };
 
 export default activityService;
