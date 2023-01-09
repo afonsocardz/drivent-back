@@ -98,7 +98,7 @@ async function createSubscription(userId: number, activityId: number) {
     throw { name: "BAD REQUEST" };
   }
 
-  const booking = await activityRepository.createActivitySubscription(userId, activityId);
+  const booking = await activityRepository.transactionSubscription(userId, activityId);
   return booking;
 }
 

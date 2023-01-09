@@ -1,4 +1,6 @@
 import { prisma } from "@/config";
+import { Prisma, Subscription } from "@prisma/client";
+import { number } from "joi";
 
 async function getActivitiesByDate(dateId: number) {
   const activities = await prisma.activity.findMany({
@@ -46,12 +48,27 @@ async function createActivitySubscription(userId: number, activityId: number) {
     }
   });
 }
-
+async function updateCapacity(activityId: number) {
+  return prisma.activity.update({
+    where: { id: activityId },
+    data: {
+      capacity: { increment: -1 }
+    }
+  });
+}
+async function transactionSubscription(userId: number, activityId: number) 
+{
+  return prisma.$transaction(async () => {
+    const subs = await createActivitySubscription(userId, activityId);
+    await updateCapacity(activityId);
+    return subs;
+  });
+}
 const activityRepository = {
   getActivitiesByDate,
   findActivitiesById,
   findActivitiesSubscription,
-  createActivitySubscription,
+  transactionSubscription,
   findManyActivities,
 };
 
