@@ -47,7 +47,7 @@ async function getActivities(userId: number) {
       startTime: dayjs(startTimeFormat).format("HH:mm"),
       endTime: dayjs(endTimeFormat).format("HH:mm"),
       durationMinutes: dayjs(endTimeFormat).diff(startTimeFormat, "minute"),
-      day: dateDayAndMonth,
+      day: dayjs(dateDayAndMonth).format("DD/MM"),
       dateIsNotExpired: dayjs(dateDayAndMonth).isSameOrAfter(today),
     };
   });
@@ -65,7 +65,7 @@ async function getActivities(userId: number) {
     const weekDayFormated = weekDayFirstWord[0].toUpperCase() + weekDayFirstWord.substring(1);
     return { day, weekDay: weekDayFormated };
   });
-  console.log(activitiesValids);
+
   return { activitiesValids, daysFiltered };
 }
 
