@@ -147,16 +147,18 @@ model Place {
 }
 
 model Activity {
-  id           Int            @id @default(autoincrement())
-  name         String
-  startTime    DateTime
-  endTime      DateTime
-  capacity     Int
-  activityDateId       Int
-  ActivityDate         ActivityDate           @relation(fields: [activityDateId], references: [id])
-  placeId      Int
-  Place        Place          @relation(fields: [placeId], references: [id])
-  Subscription Subscription[]
+  id             Int            @id @default(autoincrement())
+  name           String
+  startTime      DateTime
+  endTime        DateTime
+  capacity       Int
+  activityDateId Int
+  ActivityDate   ActivityDate   @relation(fields: [activityDateId], references: [id])
+  placeId        Int
+  Place          Place          @relation(fields: [placeId], references: [id])
+  Subscription   Subscription[]
+
+  @@index([activityDateId], type: Hash)
 }
 
 model ActivityDate {
