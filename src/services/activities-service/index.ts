@@ -33,8 +33,8 @@ async function getActivities(userId: number) {
   const activitiesDataBase = await activityRepository.findManyActivities(userId);
 
   const activities = activitiesDataBase.map((act) => {
-    const startTimeFormat = dayjs(act.startTime).format("DD/MM HH:mm");
-    const endTimeFormat = dayjs(act.endTime).format("DD/MM HH:mm");
+    const startTimeFormat = dayjs(act.startTime);
+    const endTimeFormat = dayjs(act.endTime);
     const today = dayjs(Date.now()).format("DD/MM");
     const dateDayAndMonth = dayjs(act.ActivityDate.date).format("DD/MM");
 
