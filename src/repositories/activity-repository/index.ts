@@ -8,6 +8,13 @@ async function getActivitiesByDate(dateId: number) {
   });
   return activities;
 }
+async function findActivitiesById(id: number) {
+  return prisma.activity.findUnique({
+    where: {
+      id: id
+    }
+  });
+}
 
 async function findManyActivities(userId: number) {
   return prisma.activity.findMany({
@@ -23,9 +30,28 @@ async function findManyActivities(userId: number) {
     orderBy: [{ ActivityDate: { date: "asc" } }, { startTime: "asc" }],
   });
 }
+async function findActivitiesSubscription(userId: number, activitiesId: number) {
+  return prisma.subscription.findFirst({
+    where: {
+      userId: userId,
+      activityId: activitiesId
+    }
+  });
+}
+async function createActivitySubscription(userId: number, activityId: number) {
+  return prisma.subscription.create({
+    data: {
+      userId,
+      activityId
+    }
+  });
+}
 
 const activityRepository = {
   getActivitiesByDate,
+  findActivitiesById,
+  findActivitiesSubscription,
+  createActivitySubscription,
   findManyActivities,
 };
 
