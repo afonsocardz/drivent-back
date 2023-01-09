@@ -15,3 +15,19 @@ export async function getActivities(req: AuthenticatedRequest, res: Response) {
     }
   }
 }
+export async function subscriptionActivity(req: AuthenticatedRequest, res: Response) {
+  const { userId } = req;
+  const activityId = Number(req.body.activityId);
+
+  try {
+    const booking = await activityService.createSubscription(Number(userId), activityId);
+
+    return res.status(httpStatus.OK).send(booking);
+  } catch (error) {
+    if(error.name === "NotFoundError") {
+      return res.sendStatus(httpStatus.NOT_FOUND);
+    }
+    if(error.name === "BAD REQUEST") {
+      return res.sendStatus(httpStatus.CONFLICT);
+    }
+  }}
