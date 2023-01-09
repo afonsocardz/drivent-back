@@ -65,8 +65,43 @@ async function getActivities(userId: number) {
   return { activitiesValids, daysFiltered };
 }
 
+async function createSubscription(userId: number, activityId: number) {
+  //Tem enrollment?
+  const enrollment = await enrollmentRepository.findWithAddressByUserId(userId);
+  if (!enrollment) {
+    throw notFoundError();
+  }
+
+  const ticket = await ticketRepository.findTicketByEnrollmentId(enrollment.id);
+
+  if (!ticket || ticket.status === "RESERVED") {
+    throw notFoundError();
+  }
+
+  const activity = await activityRepository.findActivitiesById(activityId);
+
+  if (!activity) {
+    throw notFoundError();
+  }
+
+  const capacity = Number(activity.capacity);
+  if(capacity < 1) {
+    throw { name: "BAD REQUEST" };
+  }
+
+  const userSubscription = await activityRepository.findActivitiesSubscription(userId, activityId);
+
+  if (userSubscription) {
+    throw { name: "BAD REQUEST" };
+  }
+
+  const booking = await activityRepository.createActivitySubscription(userId, activityId);
+  return booking;
+}
+
 const activityService = {
   getActivities,
+  createSubscription
 };
 
 export default activityService;
