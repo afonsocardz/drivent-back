@@ -145,6 +145,8 @@ model Place {
   id       Int        @id @default(autoincrement())
   name     String
   Activity Activity[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Activity {
@@ -158,6 +160,8 @@ model Activity {
   placeId        Int
   Place          Place          @relation(fields: [placeId], references: [id])
   Subscription   Subscription[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([activityDateId], type: Hash)
 }
