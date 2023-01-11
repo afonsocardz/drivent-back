@@ -38,16 +38,18 @@ async function getActivities(userId: number) {
   const activities = activitiesDataBase.map((act) => {
     const startTimeFormat = dayjs.utc(act.startTime);
     const endTimeFormat = dayjs.utc(act.endTime);
-    const today = dayjs(Date.now()).format("DD/MM");
-    const dateDayAndMonth = dayjs.utc(act.activityDate).format("DD/MM");
+    const today = dayjs(Date.now());
+    const activityDate = dayjs.utc(act.activityDate);
+    const userIsSubscribe = act.Subscription[0]?.userId === userId;
 
     return {
       ...act,
       startTime: dayjs(startTimeFormat).format("HH:mm"),
       endTime: dayjs(endTimeFormat).format("HH:mm"),
       durationMinutes: dayjs(endTimeFormat).diff(startTimeFormat, "minute"),
-      day: dayjs(dateDayAndMonth).format("DD/MM"),
-      dateIsNotExpired: dayjs(dateDayAndMonth).isSameOrAfter(today),
+      day: dayjs(activityDate).format("YYYY/MM/DD"),
+      dateIsNotExpired: dayjs(activityDate).isSameOrAfter(today),
+      userIsSubscribe,
     };
   });
 
@@ -62,7 +64,9 @@ async function getActivities(userId: number) {
     const weekDayComplet = dayjs(day).locale("pt-br").format("dddd");
     const weekDayFirstWord = weekDayComplet.split("-")[0];
     const weekDayFormated = weekDayFirstWord[0].toUpperCase() + weekDayFirstWord.substring(1);
-    return { day, weekDay: weekDayFormated };
+    const dayAndMonth = dayjs(day).format("DD/MM");
+
+    return { day, weekDay: weekDayFormated, dayAndMonth };
   });
 
   return { activitiesValids, daysFiltered };
@@ -88,7 +92,7 @@ async function createSubscription(userId: number, activityId: number) {
   }
 
   const capacity = Number(activity.capacity);
-  if(capacity < 1) {
+  if (capacity < 1) {
     throw { name: "BAD REQUEST" };
   }
 
@@ -98,13 +102,13 @@ async function createSubscription(userId: number, activityId: number) {
     throw { name: "BAD REQUEST" };
   }
 
-  const booking = await activityRepository.createActivitySubscription(userId, activityId);
+  const booking = await activityRepository.transactionSubscription(userId, activityId);
   return booking;
 }
 
 const activityService = {
   getActivities,
-  createSubscription
+  createSubscription,
 };
 
 export default activityService;
