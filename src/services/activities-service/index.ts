@@ -39,11 +39,10 @@ async function getActivities(userId: number) {
     const startTimeFormat = dayjs.utc(act.startTime);
     const endTimeFormat = dayjs.utc(act.endTime);
     const today = dayjs(Date.now()).format("DD/MM");
-    const dateDayAndMonth = dayjs.utc(act.ActivityDate.date).format("DD/MM");
+    const dateDayAndMonth = dayjs.utc(act.activityDate).format("DD/MM");
 
     return {
       ...act,
-      test: act.ActivityDate.date.getDay(),
       startTime: dayjs(startTimeFormat).format("HH:mm"),
       endTime: dayjs(endTimeFormat).format("HH:mm"),
       durationMinutes: dayjs(endTimeFormat).diff(startTimeFormat, "minute"),

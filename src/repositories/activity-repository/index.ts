@@ -1,5 +1,5 @@
 import { prisma } from "@/config";
-
+/*
 async function getActivitiesByDate(dateId: number) {
   const activities = await prisma.activity.findMany({
     where: {
@@ -8,6 +8,7 @@ async function getActivitiesByDate(dateId: number) {
   });
   return activities;
 }
+*/
 async function findActivitiesById(id: number) {
   return prisma.activity.findUnique({
     where: {
@@ -19,7 +20,6 @@ async function findActivitiesById(id: number) {
 async function findManyActivities(userId: number) {
   return prisma.activity.findMany({
     include: {
-      ActivityDate: true,
       Place: true,
       Subscription: {
         where: {
@@ -27,7 +27,7 @@ async function findManyActivities(userId: number) {
         },
       },
     },
-    orderBy: [{ ActivityDate: { date: "asc" } }, { startTime: "asc" }],
+    orderBy: { startTime: "asc" },
   });
 }
 async function findActivitiesSubscription(userId: number, activitiesId: number) {
@@ -48,7 +48,7 @@ async function createActivitySubscription(userId: number, activityId: number) {
 }
 
 const activityRepository = {
-  getActivitiesByDate,
+  //getActivitiesByDate,
   findActivitiesById,
   findActivitiesSubscription,
   createActivitySubscription,
