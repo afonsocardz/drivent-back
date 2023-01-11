@@ -21,6 +21,7 @@ async function createEvent() {
   }
   console.log({ event });
 }
+
 async function createUser(): Promise<User> {
   let testUser = await prisma.user.findFirst({
     where: {
@@ -197,73 +198,6 @@ async function createRooms(hotel: Hotel) {
   }
 }
 
-//TODO remover dates
-async function createDates() {
-  let activitiesDates = await prisma.activityDate.findMany();
-  if (activitiesDates.length === 0) {
-    await prisma.activityDate.create({
-      data: {
-        id: 1,
-        date: new Date("2023-12-24T09:00:00-00:00"),
-      },
-    });
-    await prisma.activityDate.create({
-      data: {
-        id: 2,
-        date: new Date("2023-12-24T10:00:00-00:00"),
-      },
-    });
-    await prisma.activityDate.create({
-      data: {
-        id: 3,
-        date: new Date("2022-12-24T09:00:00-00:00"),
-      },
-    });
-    await prisma.activityDate.create({
-      data: {
-        id: 4,
-        date: new Date("2022-12-25T09:00:00-00:00"),
-      },
-    });
-    await prisma.activityDate.create({
-      data: {
-        id: 5,
-        date: new Date("2022-12-24T09:00:00-00:00"),
-      },
-    });
-    await prisma.activityDate.create({
-      data: {
-        id: 6,
-        date: new Date("2022-12-24T10:00:00-00:00"),
-      },
-    });
-    await prisma.activityDate.create({
-      data: {
-        id: 7,
-        date: new Date("2022-12-25T09:00:00-00:00"),
-      },
-    });
-    await prisma.activityDate.create({
-      data: {
-        id: 8,
-        date: new Date("2023-12-26T09:00:00-00:00"),
-      },
-    });
-    await prisma.activityDate.create({
-      data: {
-        id: 9,
-        date: new Date("2023-12-26T09:00:00-00:00"),
-      },
-    });
-    await prisma.activityDate.create({
-      data: {
-        id: 10,
-        date: new Date("2023-12-26T09:00:00-00:00"),
-      },
-    });
-  }
-}
-
 async function createLocales() {
   let locales = await prisma.place.findMany();
   if (locales.length === 0) {
@@ -296,8 +230,7 @@ async function createActivities(locales: Place[]) {
         name: "Minecraft: Montando o PC ideal",
         capacity: 27,
         placeId: locales[0].id,
-        //TODO remover
-        activityDateId: 1,
+        activityDate: new Date("2023-01-12T09:00:00-00:00"),
         startTime: new Date("2023-01-12T09:00:00-00:00"),
         endTime: new Date("2023-01-12T10:00:00-00:00"),
       },
@@ -307,8 +240,7 @@ async function createActivities(locales: Place[]) {
         name: "LoL: Montando o PC ideal",
         capacity: 10,
         placeId: locales[0].id,
-        //TODO remover
-        activityDateId: 2,
+        activityDate: new Date("2023-01-13T10:00:00-00:00"),
         startTime: new Date("2023-01-13T10:00:00-00:00"),
         endTime: new Date("2023-01-13T11:00:00-00:00"),
       },
@@ -318,8 +250,7 @@ async function createActivities(locales: Place[]) {
         name: "Palestra x",
         capacity: 27,
         placeId: locales[1].id,
-        //TODO remover
-        activityDateId: 3,
+        activityDate: new Date("2023-01-14T11:00:00-00:00"),
         startTime: new Date("2023-01-14T11:00:00-00:00"),
         endTime: new Date("2023-01-14T12:45:00-00:00"),
       },
@@ -329,8 +260,7 @@ async function createActivities(locales: Place[]) {
         name: "Palestra y",
         capacity: 27,
         placeId: locales[2].id,
-        //TODO remover
-        activityDateId: 4,
+        activityDate: new Date("2023-01-15T09:00:00-00:00"),
         startTime: new Date("2023-01-15T09:00:00-00:00"),
         endTime: new Date("2023-01-15T11:30:00-00:00"),
       },
@@ -340,8 +270,7 @@ async function createActivities(locales: Place[]) {
         name: "Palestra z",
         capacity: 1,
         placeId: locales[2].id,
-        //TODO remover
-        activityDateId: 5,
+        activityDate: new Date("2023-01-15T10:00:00-00:00"),
         startTime: new Date("2023-01-15T10:00:00-00:00"),
         endTime: new Date("2023-01-15T11:30:00-00:00"),
       },
@@ -352,8 +281,7 @@ async function createActivities(locales: Place[]) {
         name: "Ceia de Natal",
         capacity: 20,
         placeId: locales[0].id,
-        //TODO remover
-        activityDateId: 6,
+        activityDate: new Date("2023-01-15T11:00:00-00:00"),
         startTime: new Date("2023-01-15T11:00:00-00:00"),
         endTime: new Date("2023-01-15T13:00:00-00:00"),
       },
@@ -363,8 +291,7 @@ async function createActivities(locales: Place[]) {
         name: "Workshop: Arroz com uva passa",
         capacity: 20,
         placeId: locales[2].id,
-        //TODO remover
-        activityDateId: 7,
+        activityDate: new Date("2023-01-15T10:30:00-00:00"),
         startTime: new Date("2023-01-15T10:30:00-00:00"),
         endTime: new Date("2023-01-15T12:00:00-00:00"),
       },
@@ -374,8 +301,7 @@ async function createActivities(locales: Place[]) {
         name: "Atividade qualquer 1",
         capacity: 20,
         placeId: locales[0].id,
-        //TODO remover
-        activityDateId: 8,
+        activityDate: new Date("2023-01-15T10:30:00-00:00"),
         startTime: new Date("2023-01-15T10:30:00-00:00"),
         endTime: new Date("2023-01-15T11:30:00-00:00"),
       },
@@ -385,8 +311,7 @@ async function createActivities(locales: Place[]) {
         name: "Atividade qualquer 2",
         capacity: 5,
         placeId: locales[1].id,
-        //TODO remover
-        activityDateId: 9,
+        activityDate: new Date("2023-01-15T09:00:00-00:00"),
         startTime: new Date("2023-01-15T09:00:00-00:00"),
         endTime: new Date("2023-01-15T10:45:00-00:00"),
       },
@@ -396,8 +321,7 @@ async function createActivities(locales: Place[]) {
         name: "Atividade qualquer 3",
         capacity: 60,
         placeId: locales[2].id,
-        //TODO remover
-        activityDateId: 10,
+        activityDate: new Date("2023-01-15T10:45:00-00:00"),
         startTime: new Date("2023-01-15T10:45:00-00:00"),
         endTime: new Date("2023-01-15T12:00:00-00:00"),
       },
@@ -407,8 +331,7 @@ async function createActivities(locales: Place[]) {
         name: "Evento sem capacidade",
         capacity: 0,
         placeId: locales[2].id,
-        //TODO remover
-        activityDateId: 11,
+        activityDate: new Date("2023-01-15T14:45:00-00:00"),
         startTime: new Date("2023-01-15T14:45:00-00:00"),
         endTime: new Date("2023-01-15T16:45:00-00:00"),
       },
@@ -418,6 +341,7 @@ async function createActivities(locales: Place[]) {
 
 async function main() {
   await createEvent();
+
   const user = await createUser();
   const enrollment = await createEnrollmentWithAddress(user);
   const ticketTypes = await createTicketTypes();
@@ -427,7 +351,6 @@ async function main() {
   hotels.forEach(async (hotel) => {
     await createRooms(hotel);
   });
-  await createDates();
   const locales = await createLocales();
   await createActivities(locales);
 }
