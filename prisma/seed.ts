@@ -78,7 +78,7 @@ async function createTicketTypes(): Promise<TicketType[]> {
     await prisma.ticketType.create({
       data: {
         name: "Presencial",
-        price: 250,
+        price: 250_00,
         isRemote: false,
         includesHotel: false,
       },
@@ -86,7 +86,7 @@ async function createTicketTypes(): Promise<TicketType[]> {
     await prisma.ticketType.create({
       data: {
         name: "Presencial",
-        price: 600,
+        price: 600_00,
         isRemote: false,
         includesHotel: true,
       },
@@ -94,7 +94,7 @@ async function createTicketTypes(): Promise<TicketType[]> {
     await prisma.ticketType.create({
       data: {
         name: "Online",
-        price: 100,
+        price: 100_00,
         isRemote: true,
         includesHotel: false,
       },
@@ -134,7 +134,7 @@ async function createPayment(ticket: Ticket) {
     payment = await prisma.payment.create({
       data: {
         ticketId: ticket.id,
-        value: 100,
+        value: 100_00,
         cardIssuer: faker.name.findName(),
         cardLastDigits: faker.datatype.number({ min: 1000, max: 9999 }).toString(),
       },
@@ -196,109 +196,6 @@ async function createRooms(hotel: Hotel) {
     }
   }
 }
-async function createDates()
-{
-  let activitiesDates = await prisma.activityDate.findMany();
-  if (activitiesDates.length===0) 
-  {
-    await prisma.activityDate.create({
-      data:{
-        id:1,
-        date: new Date("2022-12-24T09:00:00-00:00")
-      }
-    }) 
-    await prisma.activityDate.create({
-      data:{
-        id:2,
-        date: new Date("2022-12-24T10:00:00-00:00")
-      }
-    }) 
-    await prisma.activityDate.create({
-      data:{
-        id:3,
-        date: new Date("2022-12-24T09:00:00-00:00")
-      }
-    }) 
-    await prisma.activityDate.create({
-      data:{
-        id:4,
-        date: new Date("2022-12-25T09:00:00-00:00")
-      }
-    }) 
-    await prisma.activityDate.create({
-      data:{
-        id:5,
-        date: new Date("2022-12-24T09:00:00-00:00")
-      }
-    }) 
-    await prisma.activityDate.create({
-      data:{
-        id:6,
-        date: new Date("2022-12-24T10:00:00-00:00")
-      }
-    }) 
-    await prisma.activityDate.create({
-      data:{
-        id:7,
-        date: new Date("2022-12-25T09:00:00-00:00")
-      }
-    }) 
-    await prisma.activityDate.create({
-      data:{
-        id:8,
-        date: new Date("2023-12-26T09:00:00-00:00")
-      }
-    }) 
-    await prisma.activityDate.create({
-      data:{
-        id:9,
-        date: new Date("2023-12-26T09:00:00-00:00")
-      }
-    }) 
-    await prisma.activityDate.create({
-      data:{
-        id:10,
-        date: new Date("2023-12-26T09:00:00-00:00"),
-      }
-    }) 
-    await prisma.activityDate.create({
-      data:{
-        id:11,
-        date: new Date()
-      }
-    }) 
-    await prisma.activityDate.create({
-      data:{
-        date: new Date()
-      }
-    }) 
-    await prisma.activityDate.create({
-      data:{
-        date: new Date()
-      }
-    }) 
-    await prisma.activityDate.create({
-      data:{
-        date: new Date()
-      }
-    }) 
-    await prisma.activityDate.create({
-      data:{
-        date: new Date()
-      }
-    }) 
-    await prisma.activityDate.create({
-      data:{
-        date: new Date()
-      }
-    }) 
-    await prisma.activityDate.create({
-      data:{
-        date: new Date()
-      }
-    }) 
-  }
-}
 async function createLocales() {
   let locales = await prisma.place.findMany();
   if (locales.length === 0) {
@@ -323,7 +220,7 @@ async function createLocales() {
   return locales;
 }
 
-async function createActivities(locales:  Place[]) {
+async function createActivities(locales: Place[]) {
   let activities = await prisma.activity.findMany();
   if (activities.length === 0 && locales.length >= 3) {
     await prisma.activity.create({
@@ -331,9 +228,9 @@ async function createActivities(locales:  Place[]) {
         name: "Minecraft: Montando o PC ideal",
         capacity: 27,
         placeId: locales[0].id,
-        activityDateId: 1,
-        startTime: new Date("2022-12-24T09:00:00-00:00"),
-        endTime: new Date("2022-12-24T10:00:00-00:00"),
+        activityDate: new Date("2023-01-12T09:00:00-00:00"),
+        startTime: new Date("2023-01-12T09:00:00-00:00"),
+        endTime: new Date("2023-01-12T10:00:00-00:00"),
       },
     });
     await prisma.activity.create({
@@ -341,9 +238,9 @@ async function createActivities(locales:  Place[]) {
         name: "LoL: Montando o PC ideal",
         capacity: 10,
         placeId: locales[0].id,
-        activityDateId:2,
-        startTime: new Date("2022-12-24T10:00:00-00:00"),
-        endTime: new Date("2022-12-24T11:00:00-00:00"),
+        activityDate: new Date("2023-01-13T10:00:00-00:00"),
+        startTime: new Date("2023-01-13T10:00:00-00:00"),
+        endTime: new Date("2023-01-13T11:00:00-00:00"),
       },
     });
     await prisma.activity.create({
@@ -351,9 +248,9 @@ async function createActivities(locales:  Place[]) {
         name: "Palestra x",
         capacity: 27,
         placeId: locales[1].id,
-        activityDateId:3,
-        startTime: new Date("2022-12-24T09:00:00-00:00"),
-        endTime: new Date("2022-12-24T11:00:00-00:00"),
+        activityDate: new Date("2023-01-14T11:00:00-00:00"),
+        startTime: new Date("2023-01-14T11:00:00-00:00"),
+        endTime: new Date("2023-01-14T12:45:00-00:00"),
       },
     });
     await prisma.activity.create({
@@ -361,9 +258,9 @@ async function createActivities(locales:  Place[]) {
         name: "Palestra y",
         capacity: 27,
         placeId: locales[2].id,
-        activityDateId:4,
-        startTime: new Date("2015-12-24T09:00:00-00:00"),
-        endTime: new Date("2022-12-24T10:00:00-00:00"),
+        activityDate: new Date("2023-01-15T09:00:00-00:00"),
+        startTime: new Date("2023-01-15T09:00:00-00:00"),
+        endTime: new Date("2023-01-15T11:30:00-00:00"),
       },
     });
     await prisma.activity.create({
@@ -371,9 +268,9 @@ async function createActivities(locales:  Place[]) {
         name: "Palestra z",
         capacity: 1,
         placeId: locales[2].id,
-        activityDateId:5,
-        startTime: new Date("2022-12-24T10:00:00-00:00"),
-        endTime: new Date("2022-12-24T11:00:00-00:00"),
+        activityDate: new Date("2023-01-15T10:00:00-00:00"),
+        startTime: new Date("2023-01-15T10:00:00-00:00"),
+        endTime: new Date("2023-01-15T11:30:00-00:00"),
       },
     });
 
@@ -382,9 +279,9 @@ async function createActivities(locales:  Place[]) {
         name: "Ceia de Natal",
         capacity: 20,
         placeId: locales[0].id,
-        activityDateId:6,
-        startTime: new Date("2022-12-25T09:00:00-00:00"),
-        endTime: new Date("2022-12-25T11:00:00-00:00"),
+        activityDate: new Date("2023-01-15T11:00:00-00:00"),
+        startTime: new Date("2023-01-15T11:00:00-00:00"),
+        endTime: new Date("2023-01-15T13:00:00-00:00"),
       },
     });
     await prisma.activity.create({
@@ -392,9 +289,9 @@ async function createActivities(locales:  Place[]) {
         name: "Workshop: Arroz com uva passa",
         capacity: 20,
         placeId: locales[2].id,
-        activityDateId:7,
-        startTime: new Date("2022-12-25T09:00:00-00:00"),
-        endTime: new Date("2022-12-25T10:00:00-00:00"),
+        activityDate: new Date("2023-01-15T10:30:00-00:00"),
+        startTime: new Date("2023-01-15T10:30:00-00:00"),
+        endTime: new Date("2023-01-15T12:00:00-00:00"),
       },
     });
     await prisma.activity.create({
@@ -402,9 +299,9 @@ async function createActivities(locales:  Place[]) {
         name: "Atividade qualquer 1",
         capacity: 20,
         placeId: locales[0].id,
-        activityDateId:8,
-        startTime: new Date("2023-12-26T09:00:00-00:00"),
-        endTime: new Date("2023-12-26T12:00:00-00:00"),
+        activityDate: new Date("2023-01-15T10:30:00-00:00"),
+        startTime: new Date("2023-01-15T10:30:00-00:00"),
+        endTime: new Date("2023-01-15T11:30:00-00:00"),
       },
     });
     await prisma.activity.create({
@@ -412,9 +309,9 @@ async function createActivities(locales:  Place[]) {
         name: "Atividade qualquer 2",
         capacity: 5,
         placeId: locales[1].id,
-        activityDateId: 9, 
-        startTime: new Date("2023-12-26T09:00:00-00:00"),
-        endTime: new Date("2023-12-26T10:00:00-00:00"),
+        activityDate: new Date("2023-01-15T09:00:00-00:00"),
+        startTime: new Date("2023-01-15T09:00:00-00:00"),
+        endTime: new Date("2023-01-15T10:45:00-00:00"),
       },
     });
     await prisma.activity.create({
@@ -422,19 +319,19 @@ async function createActivities(locales:  Place[]) {
         name: "Atividade qualquer 3",
         capacity: 60,
         placeId: locales[2].id,
-        activityDateId:10,
-        startTime: new Date("2023-12-26T09:00:00-00:00"),
-        endTime: new Date("2023-12-26T11:00:00-00:00"),
+        activityDate: new Date("2023-01-15T10:45:00-00:00"),
+        startTime: new Date("2023-01-15T10:45:00-00:00"),
+        endTime: new Date("2023-01-15T12:00:00-00:00"),
       },
     });
     await prisma.activity.create({
       data: {
-        name: "Atividade qualquer 4",
-        capacity: 60,
+        name: "Evento sem capacidade",
+        capacity: 0,
         placeId: locales[2].id,
-        activityDateId:11,
-        startTime: new Date(),
-        endTime: new Date(),
+        activityDate: new Date("2023-01-15T14:45:00-00:00"),
+        startTime: new Date("2023-01-15T14:45:00-00:00"),
+        endTime: new Date("2023-01-15T16:45:00-00:00"),
       },
     });
   }
@@ -451,11 +348,9 @@ async function main() {
   hotels.forEach(async (hotel) => {
     await createRooms(hotel);
   });
-  await createDates();
   const locales = await createLocales();
   await createActivities(locales);
 }
-
 
 main()
   .catch((e) => {
