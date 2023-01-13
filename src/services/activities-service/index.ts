@@ -6,6 +6,7 @@ import ticketRepository from "@/repositories/ticket-repository";
 import activityRepository from "@/repositories/activity-repository";
 import compareTime from "dayjs/plugin/isSameOrAfter.js";
 import utc from "dayjs/plugin/utc";
+import { datetimeConflict } from "@/errors/datetime-conflict-error";
 
 dayjs.extend(utc);
 dayjs.utc();
@@ -38,17 +39,18 @@ async function getActivities(userId: number) {
   const activities = activitiesDataBase.map((act) => {
     const startTimeFormat = dayjs.utc(act.startTime);
     const endTimeFormat = dayjs.utc(act.endTime);
-    const today = dayjs(Date.now()).format("DD/MM");
-    const dateDayAndMonth = dayjs.utc(act.ActivityDate.date).format("DD/MM");
+    const today = dayjs(Date.now());
+    const activityDate = dayjs.utc(act.activityDate);
+    const userIsSubscribe = act.Subscription[0]?.userId === userId;
 
     return {
       ...act,
-      test: act.ActivityDate.date.getDay(),
       startTime: dayjs(startTimeFormat).format("HH:mm"),
       endTime: dayjs(endTimeFormat).format("HH:mm"),
       durationMinutes: dayjs(endTimeFormat).diff(startTimeFormat, "minute"),
-      day: dateDayAndMonth,
-      dateIsNotExpired: dayjs(dateDayAndMonth).isSameOrAfter(today),
+      day: dayjs(activityDate).format("YYYY/MM/DD"),
+      dateIsNotExpired: dayjs(activityDate).isSameOrAfter(today),
+      userIsSubscribe,
     };
   });
 
@@ -63,9 +65,11 @@ async function getActivities(userId: number) {
     const weekDayComplet = dayjs(day).locale("pt-br").format("dddd");
     const weekDayFirstWord = weekDayComplet.split("-")[0];
     const weekDayFormated = weekDayFirstWord[0].toUpperCase() + weekDayFirstWord.substring(1);
-    return { day, weekDay: weekDayFormated };
+    const dayAndMonth = dayjs(day).format("DD/MM");
+
+    return { day, weekDay: weekDayFormated, dayAndMonth };
   });
-  console.log(activitiesValids);
+
   return { activitiesValids, daysFiltered };
 }
 
@@ -89,7 +93,7 @@ async function createSubscription(userId: number, activityId: number) {
   }
 
   const capacity = Number(activity.capacity);
-  if(capacity < 1) {
+  if (capacity < 1) {
     throw { name: "BAD REQUEST" };
   }
 
@@ -98,14 +102,26 @@ async function createSubscription(userId: number, activityId: number) {
   if (userSubscription) {
     throw { name: "BAD REQUEST" };
   }
+  const userActivities = await activityRepository.findManyActivities(userId);
+  
+  for (let index = 0; index < userActivities.length; index++) 
+  {
+    if(checkEventCoincidence(userActivities[index].startTime, userActivities[index].endTime,
+      activity.startTime, activity.endTime))
+    {
+      throw datetimeConflict();
+    }
+  }
 
   const booking = await activityRepository.transactionSubscription(userId, activityId);
   return booking;
 }
-
+function checkEventCoincidence(startTime1: Date, endTime1: Date, startTime2: Date, endTime2: Date) {
+  return (startTime1 <= startTime2 && endTime1 > startTime2) || (startTime1 < endTime2 && endTime1 >= endTime2);
+}
 const activityService = {
   getActivities,
-  createSubscription
+  createSubscription,
 };
 
 export default activityService;
