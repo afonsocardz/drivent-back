@@ -6,6 +6,7 @@ import ticketRepository from "@/repositories/ticket-repository";
 import activityRepository from "@/repositories/activity-repository";
 import compareTime from "dayjs/plugin/isSameOrAfter.js";
 import utc from "dayjs/plugin/utc";
+import { datetimeConflict } from "@/errors/datetime-conflict-error";
 
 dayjs.extend(utc);
 dayjs.utc();
@@ -101,11 +102,23 @@ async function createSubscription(userId: number, activityId: number) {
   if (userSubscription) {
     throw { name: "BAD REQUEST" };
   }
+  const userActivities = await activityRepository.findManyActivities(userId);
+  
+  for (let index = 0; index < userActivities.length; index++) 
+  {
+    if(checkEventCoincidence(userActivities[index].startTime, userActivities[index].endTime,
+      activity.startTime, activity.endTime))
+    {
+      throw datetimeConflict();
+    }
+  }
 
   const booking = await activityRepository.transactionSubscription(userId, activityId);
   return booking;
 }
-
+function checkEventCoincidence(startTime1: Date, endTime1: Date, startTime2: Date, endTime2: Date) {
+  return (startTime1 <= startTime2 && endTime1 > startTime2) || (startTime1 < endTime2 && endTime1 >= endTime2);
+}
 const activityService = {
   getActivities,
   createSubscription,
