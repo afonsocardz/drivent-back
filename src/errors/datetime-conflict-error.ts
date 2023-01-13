@@ -1,8 +1,8 @@
 import { ApplicationError } from "@/protocols";
 
-export function cannotBookingError(): ApplicationError {
+export function datetimeConflict(): ApplicationError {
   return {
-    name: "CannotBookingError",
-    message: "Cannot booking this room! Overcapacity!",
+    name: "datetimeConflict",
+    message: "Você já possui atividades nesse horário",
   };
 }

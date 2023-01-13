@@ -24,10 +24,14 @@ export async function subscriptionActivity(req: AuthenticatedRequest, res: Respo
 
     return res.status(httpStatus.OK).send(booking);
   } catch (error) {
-    if(error.name === "NotFoundError") {
+    if (error.name === "NotFoundError") {
       return res.sendStatus(httpStatus.NOT_FOUND);
     }
-    if(error.name === "BAD REQUEST") {
+    if (error.name === "BAD REQUEST") {
       return res.sendStatus(httpStatus.CONFLICT);
     }
-  }}
+    if (error.name === "datetimeConflict") {
+      return res.status(httpStatus.CONFLICT).send(error.message);
+    }
+  }
+}
