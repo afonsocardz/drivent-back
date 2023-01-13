@@ -21,7 +21,6 @@ async function createEvent() {
   }
   console.log({ event });
 }
-
 async function createUser(): Promise<User> {
   let testUser = await prisma.user.findFirst({
     where: {
@@ -197,7 +196,6 @@ async function createRooms(hotel: Hotel) {
     }
   }
 }
-
 async function createLocales() {
   let locales = await prisma.place.findMany();
   if (locales.length === 0) {
@@ -341,7 +339,6 @@ async function createActivities(locales: Place[]) {
 
 async function main() {
   await createEvent();
-
   const user = await createUser();
   const enrollment = await createEnrollmentWithAddress(user);
   const ticketTypes = await createTicketTypes();
