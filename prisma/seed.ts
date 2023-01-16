@@ -228,9 +228,9 @@ async function createActivities(locales: Place[]) {
         name: "Minecraft: Montando o PC ideal",
         capacity: 27,
         placeId: locales[0].id,
-        activityDate: new Date("2023-01-12T09:00:00-00:00"),
-        startTime: new Date("2023-01-12T09:00:00-00:00"),
-        endTime: new Date("2023-01-12T10:00:00-00:00"),
+        activityDate: new Date("2023-01-18T09:00:00-00:00"),
+        startTime: new Date("2023-01-18T09:00:00-00:00"),
+        endTime: new Date("2023-01-18T10:00:00-00:00"),
       },
     });
     await prisma.activity.create({
@@ -238,100 +238,100 @@ async function createActivities(locales: Place[]) {
         name: "LoL: Montando o PC ideal",
         capacity: 10,
         placeId: locales[0].id,
-        activityDate: new Date("2023-01-13T10:00:00-00:00"),
-        startTime: new Date("2023-01-13T10:00:00-00:00"),
-        endTime: new Date("2023-01-13T11:00:00-00:00"),
+        activityDate: new Date("2023-01-18T10:00:00-00:00"),
+        startTime: new Date("2023-01-18T10:00:00-00:00"),
+        endTime: new Date("2023-01-18T11:00:00-00:00"),
       },
     });
     await prisma.activity.create({
       data: {
-        name: "Palestra x",
+        name: "Implemente bons commits",
         capacity: 27,
         placeId: locales[1].id,
-        activityDate: new Date("2023-01-14T11:00:00-00:00"),
-        startTime: new Date("2023-01-14T11:00:00-00:00"),
-        endTime: new Date("2023-01-14T12:45:00-00:00"),
+        activityDate: new Date("2023-01-18T11:00:00-00:00"),
+        startTime: new Date("2023-01-18T11:00:00-00:00"),
+        endTime: new Date("2023-01-18T12:45:00-00:00"),
       },
     });
     await prisma.activity.create({
       data: {
-        name: "Palestra y",
+        name: "Montando a Ceia de Natal",
         capacity: 27,
         placeId: locales[2].id,
-        activityDate: new Date("2023-01-15T09:00:00-00:00"),
-        startTime: new Date("2023-01-15T09:00:00-00:00"),
-        endTime: new Date("2023-01-15T11:30:00-00:00"),
+        activityDate: new Date("2023-01-18T09:00:00-00:00"),
+        startTime: new Date("2023-01-18T09:00:00-00:00"),
+        endTime: new Date("2023-01-18T11:30:00-00:00"),
       },
     });
     await prisma.activity.create({
       data: {
-        name: "Palestra z",
+        name: "Gerenciamento Online",
         capacity: 1,
         placeId: locales[2].id,
-        activityDate: new Date("2023-01-15T10:00:00-00:00"),
-        startTime: new Date("2023-01-15T10:00:00-00:00"),
-        endTime: new Date("2023-01-15T11:30:00-00:00"),
+        activityDate: new Date("2023-01-18T10:00:00-00:00"),
+        startTime: new Date("2023-01-18T10:00:00-00:00"),
+        endTime: new Date("2023-01-18T11:30:00-00:00"),
       },
     });
 
     await prisma.activity.create({
       data: {
-        name: "Ceia de Natal",
+        name: "Guia de uma mente de Sucesso",
         capacity: 20,
         placeId: locales[0].id,
-        activityDate: new Date("2023-01-15T11:00:00-00:00"),
-        startTime: new Date("2023-01-15T11:00:00-00:00"),
-        endTime: new Date("2023-01-15T13:00:00-00:00"),
+        activityDate: new Date("2023-01-18T11:00:00-00:00"),
+        startTime: new Date("2023-01-18T11:00:00-00:00"),
+        endTime: new Date("2023-01-18T13:00:00-00:00"),
       },
     });
     await prisma.activity.create({
       data: {
-        name: "Workshop: Arroz com uva passa",
+        name: "Gestão Financeira",
         capacity: 20,
         placeId: locales[2].id,
-        activityDate: new Date("2023-01-15T10:30:00-00:00"),
-        startTime: new Date("2023-01-15T10:30:00-00:00"),
-        endTime: new Date("2023-01-15T12:00:00-00:00"),
+        activityDate: new Date("2023-01-19T10:30:00-00:00"),
+        startTime: new Date("2023-01-19T10:30:00-00:00"),
+        endTime: new Date("2023-01-19T12:00:00-00:00"),
       },
     });
     await prisma.activity.create({
       data: {
-        name: "Atividade qualquer 1",
+        name: "Atualizando a biblioteca mental",
         capacity: 20,
         placeId: locales[0].id,
-        activityDate: new Date("2023-01-15T10:30:00-00:00"),
-        startTime: new Date("2023-01-15T10:30:00-00:00"),
-        endTime: new Date("2023-01-15T11:30:00-00:00"),
+        activityDate: new Date("2023-01-19T10:30:00-00:00"),
+        startTime: new Date("2023-01-19T10:30:00-00:00"),
+        endTime: new Date("2023-01-19T11:30:00-00:00"),
       },
     });
     await prisma.activity.create({
       data: {
-        name: "Atividade qualquer 2",
+        name: "Apresentação: guia de vestimenta",
         capacity: 5,
         placeId: locales[1].id,
-        activityDate: new Date("2023-01-15T09:00:00-00:00"),
-        startTime: new Date("2023-01-15T09:00:00-00:00"),
-        endTime: new Date("2023-01-15T10:45:00-00:00"),
+        activityDate: new Date("2023-01-20T09:00:00-00:00"),
+        startTime: new Date("2023-01-20T09:00:00-00:00"),
+        endTime: new Date("2023-01-20T10:45:00-00:00"),
       },
     });
     await prisma.activity.create({
       data: {
-        name: "Atividade qualquer 3",
+        name: "Receitas para surpreender",
         capacity: 60,
         placeId: locales[2].id,
-        activityDate: new Date("2023-01-15T10:45:00-00:00"),
-        startTime: new Date("2023-01-15T10:45:00-00:00"),
-        endTime: new Date("2023-01-15T12:00:00-00:00"),
+        activityDate: new Date("2023-01-20T10:45:00-00:00"),
+        startTime: new Date("2023-01-20T10:45:00-00:00"),
+        endTime: new Date("2023-01-20T12:00:00-00:00"),
       },
     });
     await prisma.activity.create({
       data: {
-        name: "Evento sem capacidade",
+        name: "Implemente bons commits",
         capacity: 0,
         placeId: locales[2].id,
-        activityDate: new Date("2023-01-15T14:45:00-00:00"),
-        startTime: new Date("2023-01-15T14:45:00-00:00"),
-        endTime: new Date("2023-01-15T16:45:00-00:00"),
+        activityDate: new Date("2023-01-20T14:45:00-00:00"),
+        startTime: new Date("2023-01-20T14:45:00-00:00"),
+        endTime: new Date("2023-01-20T16:45:00-00:00"),
       },
     });
   }
