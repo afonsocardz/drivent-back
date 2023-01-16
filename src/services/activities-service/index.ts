@@ -103,12 +103,17 @@ async function createSubscription(userId: number, activityId: number) {
     throw { name: "BAD REQUEST" };
   }
   const userActivities = await activityRepository.findManyActivities(userId);
-  
-  for (let index = 0; index < userActivities.length; index++) 
-  {
-    if(checkEventCoincidence(userActivities[index].startTime, userActivities[index].endTime,
-      activity.startTime, activity.endTime))
-    {
+
+  for (let index = 0; index < userActivities.length; index++) {
+    if (
+      checkEventCoincidence(
+        userActivities[index].startTime,
+        userActivities[index].endTime,
+        activity.startTime,
+        activity.endTime,
+      ) &&
+      userActivities[index].Subscription.length > 0
+    ) {
       throw datetimeConflict();
     }
   }
