@@ -22,4 +22,4 @@ ENV PORT=4002
 EXPOSE 4002
 RUN npx prisma generate
 # passo 8 - executar a aplicação
-CMD ["npm", "run", "dev:migrate"]
+CMD ["npm", "run", "dev"]
